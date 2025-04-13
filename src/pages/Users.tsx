@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { 
   Table, 
@@ -17,7 +17,9 @@ import {
   MoreHorizontal,
   Mail,
   ShieldCheck,
-  CircleUser
+  CircleUser,
+  X,
+  Check
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,10 +41,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
 
 // Sample user data
 const users = [
@@ -69,6 +84,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 const Users = () => {
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [roleFilters, setRoleFilters] = useState<string[]>([]);
+  const [statusFilters, setStatusFilters] = useState<string[]>([]);
   const { toast } = useToast();
   
   const form = useForm<FormValues>({
@@ -79,6 +98,32 @@ const Users = () => {
       role: "Viewer",
     },
   });
+
+  // Apply filters when dependencies change
+  useEffect(() => {
+    let result = users;
+    
+    // Apply search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(user => 
+        user.name.toLowerCase().includes(query) || 
+        user.email.toLowerCase().includes(query)
+      );
+    }
+    
+    // Apply role filters
+    if (roleFilters.length > 0) {
+      result = result.filter(user => roleFilters.includes(user.role));
+    }
+    
+    // Apply status filters
+    if (statusFilters.length > 0) {
+      result = result.filter(user => statusFilters.includes(user.status));
+    }
+    
+    setFilteredUsers(result);
+  }, [searchQuery, roleFilters, statusFilters]);
 
   const onSubmit = (data: FormValues) => {
     // In a real app, this would send the data to an API
@@ -93,6 +138,28 @@ const Users = () => {
     // Reset form and close dialog
     form.reset();
     setOpen(false);
+  };
+
+  const handleRoleFilterChange = (role: string) => {
+    setRoleFilters(prev => 
+      prev.includes(role)
+        ? prev.filter(r => r !== role)
+        : [...prev, role]
+    );
+  };
+
+  const handleStatusFilterChange = (status: string) => {
+    setStatusFilters(prev => 
+      prev.includes(status)
+        ? prev.filter(s => s !== status)
+        : [...prev, status]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setRoleFilters([]);
+    setStatusFilters([]);
   };
 
   return (
@@ -195,17 +262,116 @@ const Users = () => {
 
       <div className="bg-white rounded-lg border p-6 mb-6">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
+          {/* Search input */}
           <div className="relative w-full md:w-80">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search users..." className="pl-8" />
+            <Input 
+              placeholder="Search users..." 
+              className="pl-8" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button 
+                className="absolute right-2 top-2.5"
+                onClick={() => setSearchQuery('')}
+              >
+                <X className="h-4 w-4 text-muted-foreground hover:text-gray-900" />
+              </button>
+            )}
           </div>
+          
+          {/* Filter controls */}
           <div className="flex gap-2 w-full md:w-auto">
-            <Button variant="outline" className="flex items-center gap-2">
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
-            <Button variant="outline">Role</Button>
-            <Button variant="outline">Status</Button>
+            {/* Role Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className={`flex items-center gap-2 ${roleFilters.length > 0 ? 'bg-dashboard-purple/10 border-dashboard-purple/20 text-dashboard-purple' : ''}`}
+                >
+                  Role
+                  {roleFilters.length > 0 && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-dashboard-purple text-[10px] font-medium text-white">
+                      {roleFilters.length}
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-3">
+                <div className="space-y-3">
+                  <div className="text-sm font-medium">Filter by role</div>
+                  <div className="flex flex-col gap-2">
+                    {['Admin', 'Editor', 'Viewer'].map((role) => (
+                      <div key={role} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`role-${role}`} 
+                          checked={roleFilters.includes(role)}
+                          onCheckedChange={() => handleRoleFilterChange(role)}
+                        />
+                        <label
+                          htmlFor={`role-${role}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {role}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            
+            {/* Status Filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className={`flex items-center gap-2 ${statusFilters.length > 0 ? 'bg-dashboard-purple/10 border-dashboard-purple/20 text-dashboard-purple' : ''}`}
+                >
+                  Status
+                  {statusFilters.length > 0 && (
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-dashboard-purple text-[10px] font-medium text-white">
+                      {statusFilters.length}
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-3">
+                <div className="space-y-3">
+                  <div className="text-sm font-medium">Filter by status</div>
+                  <div className="flex flex-col gap-2">
+                    {['Active', 'Inactive'].map((status) => (
+                      <div key={status} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`status-${status}`} 
+                          checked={statusFilters.includes(status)}
+                          onCheckedChange={() => handleStatusFilterChange(status)}
+                        />
+                        <label
+                          htmlFor={`status-${status}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {status}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            
+            {/* Clear filters */}
+            {(searchQuery || roleFilters.length > 0 || statusFilters.length > 0) && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={clearFilters}
+                className="text-red-500 hover:text-red-700"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         </div>
 
@@ -224,39 +390,63 @@ const Users = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      user.role === 'Admin' 
-                        ? 'bg-dashboard-purple/10 text-dashboard-purple' 
-                        : user.role === 'Editor' 
-                          ? 'bg-dashboard-blue/10 text-dashboard-blue' 
-                          : 'bg-gray-100 text-gray-700'
-                    }`}>
-                      {user.role}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      user.status === 'Active' 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-red-100 text-red-700'
-                    }`}>
-                      {user.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>{user.lastActive}</TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.id}</TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        user.role === 'Admin' 
+                          ? 'bg-dashboard-purple/10 text-dashboard-purple' 
+                          : user.role === 'Editor' 
+                            ? 'bg-dashboard-blue/10 text-dashboard-blue' 
+                            : 'bg-gray-100 text-gray-700'
+                      }`}>
+                        {user.role}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        user.status === 'Active' 
+                          ? 'bg-green-100 text-green-700' 
+                          : 'bg-red-100 text-red-700'
+                      }`}>
+                        {user.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>{user.lastActive}</TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <Check className="mr-2 h-4 w-4" /> View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Mail className="mr-2 h-4 w-4" /> Send Email
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-red-600">
+                            <X className="mr-2 h-4 w-4" /> Delete User
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No users found
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>
