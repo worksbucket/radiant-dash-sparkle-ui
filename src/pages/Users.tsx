@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { 
   Table, 
@@ -14,10 +14,35 @@ import {
   UserPlus, 
   Search, 
   Filter, 
-  MoreHorizontal 
+  MoreHorizontal,
+  Mail,
+  ShieldCheck,
+  CircleUser
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/hooks/use-toast";
 
 // Sample user data
 const users = [
@@ -31,7 +56,45 @@ const users = [
   { id: 8, name: 'Olivia Moore', email: 'olivia@example.com', role: 'Viewer', status: 'Active', lastActive: '4 days ago' },
 ];
 
+// Create schema for form validation
+const formSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  role: z.enum(["Admin", "Editor", "Viewer"], {
+    required_error: "Please select a role.",
+  }),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
 const Users = () => {
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+  
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      role: "Viewer",
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    // In a real app, this would send the data to an API
+    console.log(data);
+    
+    // Show success message
+    toast({
+      title: "User created",
+      description: `${data.name} has been added as a ${data.role}`,
+    });
+    
+    // Reset form and close dialog
+    form.reset();
+    setOpen(false);
+  };
+
   return (
     <DashboardLayout>
       <div className="flex items-center justify-between mb-6">
@@ -39,10 +102,95 @@ const Users = () => {
           <h1 className="text-2xl font-bold">Users Management</h1>
           <p className="text-muted-foreground">Manage your team members and their account permissions</p>
         </div>
-        <Button className="bg-dashboard-purple hover:bg-dashboard-purple/90">
-          <UserPlus className="mr-2 h-4 w-4" />
-          Add User
-        </Button>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-dashboard-purple hover:bg-dashboard-purple/90">
+              <UserPlus className="mr-2 h-4 w-4" />
+              Add User
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add New User</DialogTitle>
+              <DialogDescription>
+                Add a new team member to your organization.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center space-x-2">
+                          <CircleUser className="h-4 w-4 text-muted-foreground" />
+                          <Input placeholder="John Doe" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center space-x-2">
+                          <Mail className="h-4 w-4 text-muted-foreground" />
+                          <Input type="email" placeholder="john@example.com" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        They'll receive an invitation email at this address.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center space-x-2">
+                          <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                          <select
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            {...field}
+                          >
+                            <option value="Admin">Admin</option>
+                            <option value="Editor">Editor</option>
+                            <option value="Viewer">Viewer</option>
+                          </select>
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        Sets the user's permission level in the system.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="bg-dashboard-purple hover:bg-dashboard-purple/90">
+                    Add User
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="bg-white rounded-lg border p-6 mb-6">
