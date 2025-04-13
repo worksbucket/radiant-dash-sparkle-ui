@@ -15,6 +15,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 type SidebarProps = {
   className?: string;
@@ -24,18 +25,18 @@ const Sidebar = ({ className }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', active: true },
-    { icon: Users, label: 'Users', active: false },
-    { icon: ShoppingCart, label: 'Products', active: false },
-    { icon: BarChart3, label: 'Analytics', active: false },
-    { icon: Calendar, label: 'Calendar', active: false },
-    { icon: Inbox, label: 'Messages', active: false },
-    { icon: Bell, label: 'Notifications', active: false },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/', active: window.location.pathname === '/' },
+    { icon: Users, label: 'Users', path: '/users', active: window.location.pathname === '/users' },
+    { icon: ShoppingCart, label: 'Products', path: '#', active: false },
+    { icon: BarChart3, label: 'Analytics', path: '#', active: false },
+    { icon: Calendar, label: 'Calendar', path: '#', active: false },
+    { icon: Inbox, label: 'Messages', path: '#', active: false },
+    { icon: Bell, label: 'Notifications', path: '#', active: false },
   ];
 
   const bottomNavItems = [
-    { icon: Settings, label: 'Settings', active: false },
-    { icon: HelpCircle, label: 'Help', active: false },
+    { icon: Settings, label: 'Settings', path: '#', active: false },
+    { icon: HelpCircle, label: 'Help', path: '#', active: false },
   ];
 
   return (
@@ -69,9 +70,12 @@ const Sidebar = ({ className }: SidebarProps) => {
                 "justify-start gap-2 h-10",
                 item.active && "bg-secondary font-medium"
               )}
+              asChild
             >
-              <item.icon className={cn("h-5 w-5", item.active ? "text-dashboard-purple" : "text-muted-foreground")} />
-              {!collapsed && <span>{item.label}</span>}
+              <Link to={item.path}>
+                <item.icon className={cn("h-5 w-5", item.active ? "text-dashboard-purple" : "text-muted-foreground")} />
+                {!collapsed && <span>{item.label}</span>}
+              </Link>
             </Button>
           ))}
         </nav>
@@ -84,9 +88,12 @@ const Sidebar = ({ className }: SidebarProps) => {
               key={i}
               variant="ghost"
               className="justify-start gap-2 h-10"
+              asChild
             >
-              <item.icon className="h-5 w-5 text-muted-foreground" />
-              {!collapsed && <span>{item.label}</span>}
+              <Link to={item.path}>
+                <item.icon className="h-5 w-5 text-muted-foreground" />
+                {!collapsed && <span>{item.label}</span>}
+              </Link>
             </Button>
           ))}
         </nav>
