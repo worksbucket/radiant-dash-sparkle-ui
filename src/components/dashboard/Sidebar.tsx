@@ -17,7 +17,8 @@ import {
   ChevronDown,
   Folder,
   FolderOpen,
-  List
+  List,
+  Components
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
@@ -32,10 +33,12 @@ const Sidebar = ({ className }: SidebarProps) => {
   const [demoMenuOpen, setDemoMenuOpen] = useState(false);
   const [childMenu1Open, setChildMenu1Open] = useState(false);
   const [childMenu2Open, setChildMenu2Open] = useState(false);
+  const [componentsMenuOpen, setComponentsMenuOpen] = useState(false);
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/', active: window.location.pathname === '/' },
     { icon: Users, label: 'Users', path: '/users', active: window.location.pathname === '/users' },
+    { icon: Components, label: 'Components', path: '/components', active: window.location.pathname === '/components' },
     { icon: ShoppingCart, label: 'Products', path: '#', active: false },
     { icon: BarChart3, label: 'Analytics', path: '#', active: false },
     { icon: Calendar, label: 'Calendar', path: '#', active: false },
@@ -215,6 +218,81 @@ const Sidebar = ({ className }: SidebarProps) => {
                     </Button>
                   </CollapsibleContent>
                 </Collapsible>
+              </CollapsibleContent>
+            )}
+          </Collapsible>
+          
+          {/* Components Menu */}
+          <Collapsible 
+            open={componentsMenuOpen} 
+            onOpenChange={setComponentsMenuOpen}
+            className="w-full"
+          >
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                className="justify-start w-full gap-2 h-10"
+              >
+                <Components className="h-5 w-5 text-muted-foreground" />
+                {!collapsed && (
+                  <>
+                    <span className="flex-grow text-left">Components</span>
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-transform text-muted-foreground",
+                        componentsMenuOpen && "transform rotate-180"
+                      )}
+                    />
+                  </>
+                )}
+              </Button>
+            </CollapsibleTrigger>
+            
+            {!collapsed && (
+              <CollapsibleContent className="ml-2 pl-4 border-l border-border">
+                <Button
+                  variant="ghost"
+                  className="justify-start w-full gap-2 h-9 mt-1"
+                  asChild
+                >
+                  <Link to="/components#typography">
+                    <List className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Typography</span>
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className="justify-start w-full gap-2 h-9"
+                  asChild
+                >
+                  <Link to="/components#buttons">
+                    <List className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Buttons</span>
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className="justify-start w-full gap-2 h-9"
+                  asChild
+                >
+                  <Link to="/components#forms">
+                    <List className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Forms</span>
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className="justify-start w-full gap-2 h-9"
+                  asChild
+                >
+                  <Link to="/components#tables">
+                    <List className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Tables</span>
+                  </Link>
+                </Button>
               </CollapsibleContent>
             )}
           </Collapsible>
