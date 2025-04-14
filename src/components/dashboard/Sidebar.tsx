@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { 
@@ -18,7 +17,7 @@ import {
   Folder,
   FolderOpen,
   List,
-  Components
+  Component
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
@@ -38,7 +37,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/', active: window.location.pathname === '/' },
     { icon: Users, label: 'Users', path: '/users', active: window.location.pathname === '/users' },
-    { icon: Components, label: 'Components', path: '/components', active: window.location.pathname === '/components' },
+    { icon: Component, label: 'Components', path: '/components', active: window.location.pathname === '/components' },
     { icon: ShoppingCart, label: 'Products', path: '#', active: false },
     { icon: BarChart3, label: 'Analytics', path: '#', active: false },
     { icon: Calendar, label: 'Calendar', path: '#', active: false },
@@ -233,7 +232,7 @@ const Sidebar = ({ className }: SidebarProps) => {
                 variant="ghost"
                 className="justify-start w-full gap-2 h-10"
               >
-                <Components className="h-5 w-5 text-muted-foreground" />
+                <Component className="h-5 w-5 text-muted-foreground" />
                 {!collapsed && (
                   <>
                     <span className="flex-grow text-left">Components</span>
