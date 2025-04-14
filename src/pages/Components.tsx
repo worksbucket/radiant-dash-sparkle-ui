@@ -84,6 +84,12 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from "@/components/ui/tabs";
 
 const Components = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -440,6 +446,142 @@ const Components = () => {
           </Card>
         </section>
 
+        {/* Tabs Section */}
+        <section id="tabs" className="scroll-mt-16">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Tabs</CardTitle>
+              <CardDescription>Tab panels with automatic content activation</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-6">
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Basic Tabs</h4>
+                <Tabs defaultValue="account" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="account">Account</TabsTrigger>
+                    <TabsTrigger value="password">Password</TabsTrigger>
+                    <TabsTrigger value="settings">Settings</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="account" className="p-4 bg-muted/50 rounded-md mt-4">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Account Information</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Manage your account information, including your name, email, and profile settings.
+                      </p>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex flex-col space-y-1">
+                          <label className="text-sm font-medium">Email</label>
+                          <Input defaultValue="johndoe@example.com" readOnly />
+                        </div>
+                        <div className="flex flex-col space-y-1">
+                          <label className="text-sm font-medium">Username</label>
+                          <Input defaultValue="johndoe" />
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="password" className="p-4 bg-muted/50 rounded-md mt-4">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Change Password</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Update your password to maintain account security.
+                      </p>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex flex-col space-y-1">
+                          <label className="text-sm font-medium">Current Password</label>
+                          <Input type="password" />
+                        </div>
+                        <div className="flex flex-col space-y-1">
+                          <label className="text-sm font-medium">New Password</label>
+                          <Input type="password" />
+                        </div>
+                        <div className="flex flex-col space-y-1">
+                          <label className="text-sm font-medium">Confirm New Password</label>
+                          <Input type="password" />
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="settings" className="p-4 bg-muted/50 rounded-md mt-4">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium">Notification Settings</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Control how you receive notifications and updates.
+                      </p>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="email-notif" />
+                          <label
+                            htmlFor="email-notif"
+                            className="text-sm font-medium leading-none"
+                          >
+                            Email Notifications
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="sms-notif" defaultChecked />
+                          <label
+                            htmlFor="sms-notif"
+                            className="text-sm font-medium leading-none"
+                          >
+                            SMS Notifications
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="push-notif" />
+                          <label
+                            htmlFor="push-notif"
+                            className="text-sm font-medium leading-none"
+                          >
+                            Push Notifications
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Tabs with Custom Styling</h4>
+                <Tabs defaultValue="tab1" className="w-full">
+                  <TabsList className="bg-muted/30 p-0.5 border rounded-lg">
+                    <TabsTrigger value="tab1" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                      Tab 1
+                    </TabsTrigger>
+                    <TabsTrigger value="tab2" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                      Tab 2
+                    </TabsTrigger>
+                    <TabsTrigger value="tab3" className="rounded-md data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                      Tab 3
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="tab1" className="border rounded-md p-4 mt-4">
+                    <h3 className="text-lg font-medium">Tab Content 1</h3>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Content for the first tab panel. You can put any components or content here.
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="tab2" className="border rounded-md p-4 mt-4">
+                    <h3 className="text-lg font-medium">Tab Content 2</h3>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Content for the second tab panel. Each tab panel is only mounted when the tab is active.
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="tab3" className="border rounded-md p-4 mt-4">
+                    <h3 className="text-lg font-medium">Tab Content 3</h3>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Content for the third tab panel. Tabs provide an accessible way to organize content.
+                    </p>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
         {/* Modals and Dialogs Section */}
         <section id="modals" className="scroll-mt-16">
           <Card>
@@ -736,171 +878,4 @@ const Components = () => {
               <Separator />
               
               <div>
-                <h4 className="text-lg font-semibold mb-4">Avatars</h4>
-                <div className="flex flex-wrap gap-4">
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  
-                  <Avatar>
-                    <AvatarFallback className="bg-primary text-primary-foreground">JD</AvatarFallback>
-                  </Avatar>
-                  
-                  <Avatar>
-                    <AvatarFallback className="bg-green-500 text-white">MK</AvatarFallback>
-                  </Avatar>
-                </div>
-              </div>
-              
-              <Separator />
-              
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Accordion</h4>
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>What is this component library?</AccordionTrigger>
-                    <AccordionContent>
-                      This component library showcases all HTML elements styled with our theme, providing a comprehensive reference for designers and developers.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-2">
-                    <AccordionTrigger>How do I use these components?</AccordionTrigger>
-                    <AccordionContent>
-                      Simply import the components from their respective files and use them in your React applications. Each component is built with accessibility and customization in mind.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-3">
-                    <AccordionTrigger>Can I customize these components?</AccordionTrigger>
-                    <AccordionContent>
-                      Yes, all components are built using Tailwind CSS, making them highly customizable. You can extend styles using utility classes or modify the base styles in your Tailwind configuration.
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-              
-              <Separator />
-              
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Aspect Ratio</h4>
-                <div className="grid gap-4">
-                  <AspectRatio ratio={16 / 9} className="bg-muted rounded-md overflow-hidden">
-                    <img
-                      src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-                      alt="Image"
-                      className="object-cover w-full h-full"
-                    />
-                  </AspectRatio>
-                </div>
-              </div>
-              
-              <Separator />
-              
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Toasts</h4>
-                <div className="grid gap-4">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Toasts provide brief notifications or messages to users that appear temporarily.
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <Button
-                      variant="default"
-                      onClick={() => {
-                        toast("Default Toast", {
-                          description: "This is a default toast notification",
-                        });
-                      }}
-                    >
-                      Show Default Toast
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        toast.success("Success Toast", {
-                          description: "This is a success toast notification",
-                        });
-                      }}
-                    >
-                      Show Success Toast
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => {
-                        toast.error("Error Toast", {
-                          description: "This is an error toast notification",
-                        });
-                      }}
-                    >
-                      Show Error Toast
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        hookToast({
-                          title: "Shadcn Toast",
-                          description: "This is a toast using the useToast hook",
-                        });
-                      }}
-                    >
-                      Show Shadcn Toast
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              
-              <Separator />
-              
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Tooltips</h4>
-                <div className="grid gap-4">
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Tooltips display additional information when users hover over an element.
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="outline">Hover Me</Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>This is a basic tooltip</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="secondary">
-                            <Info className="h-4 w-4 mr-2" />
-                            With Icon
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Tooltip with more detailed information</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    
-                    <TooltipProvider>
-                      <Tooltip delayDuration={500}>
-                        <TooltipTrigger asChild>
-                          <Button variant="ghost">Delayed Tooltip</Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>This tooltip has a 500ms delay</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-      </div>
-    </DashboardLayout>
-  );
-};
-
-export default Components;
+                <h4 className="text-lg font-semibold mb-4">
