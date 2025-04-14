@@ -76,9 +76,18 @@ import {
   SheetClose
 } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipProvider, 
+  TooltipTrigger 
+} from "@/components/ui/tooltip";
+import { toast } from "sonner";
 
 const Components = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast: hookToast } = useToast();
   
   // Scroll to the appropriate section based on the URL hash
   useEffect(() => {
@@ -782,6 +791,108 @@ const Components = () => {
                       className="object-cover w-full h-full"
                     />
                   </AspectRatio>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Toasts</h4>
+                <div className="grid gap-4">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Toasts provide brief notifications or messages to users that appear temporarily.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Button
+                      variant="default"
+                      onClick={() => {
+                        toast("Default Toast", {
+                          description: "This is a default toast notification",
+                        });
+                      }}
+                    >
+                      Show Default Toast
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        toast.success("Success Toast", {
+                          description: "This is a success toast notification",
+                        });
+                      }}
+                    >
+                      Show Success Toast
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        toast.error("Error Toast", {
+                          description: "This is an error toast notification",
+                        });
+                      }}
+                    >
+                      Show Error Toast
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        hookToast({
+                          title: "Shadcn Toast",
+                          description: "This is a toast using the useToast hook",
+                        });
+                      }}
+                    >
+                      Show Shadcn Toast
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Tooltips</h4>
+                <div className="grid gap-4">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Tooltips display additional information when users hover over an element.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline">Hover Me</Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>This is a basic tooltip</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="secondary">
+                            <Info className="h-4 w-4 mr-2" />
+                            With Icon
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Tooltip with more detailed information</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    
+                    <TooltipProvider>
+                      <Tooltip delayDuration={500}>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost">Delayed Tooltip</Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>This tooltip has a 500ms delay</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
                 </div>
               </div>
             </CardContent>
