@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { 
@@ -878,4 +879,50 @@ const Components = () => {
               <Separator />
               
               <div>
-                <h4 className="text-lg font-semibold mb-4">
+                <h4 className="text-lg font-semibold mb-4">Tooltips & Toasts</h4>
+                <div className="flex flex-wrap gap-4">
+                  {/* Tooltips */}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="outline">Hover Me</Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>This is a tooltip</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  
+                  {/* Toast buttons */}
+                  <Button
+                    onClick={() => {
+                      hookToast({
+                        title: "Shadcn/UI Toast",
+                        description: "This is a toast notification using the shadcn/ui toast component.",
+                      });
+                    }}
+                  >
+                    Show Toast (Shadcn)
+                  </Button>
+                  
+                  <Button
+                    onClick={() => {
+                      toast("Sonner Toast", {
+                        description: "This is a toast notification using the sonner package.",
+                      });
+                    }}
+                    variant="secondary"
+                  >
+                    Show Toast (Sonner)
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export default Components;
