@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { 
@@ -17,7 +18,9 @@ import {
   Folder,
   FolderOpen,
   List,
-  Component
+  Component,
+  LogIn,
+  UserPlus
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
@@ -33,6 +36,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   const [childMenu1Open, setChildMenu1Open] = useState(false);
   const [childMenu2Open, setChildMenu2Open] = useState(false);
   const [componentsMenuOpen, setComponentsMenuOpen] = useState(false);
+  const [authMenuOpen, setAuthMenuOpen] = useState(false);
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/', active: window.location.pathname === '/' },
@@ -89,6 +93,65 @@ const Sidebar = ({ className }: SidebarProps) => {
               </Link>
             </Button>
           ))}
+          
+          {/* Authentication Menu */}
+          <Collapsible 
+            open={authMenuOpen} 
+            onOpenChange={setAuthMenuOpen}
+            className="w-full"
+          >
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                className="justify-start w-full gap-2 h-10"
+              >
+                <LogIn className="h-5 w-5 text-muted-foreground" />
+                {!collapsed && (
+                  <>
+                    <span className="flex-grow text-left">Authentication</span>
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 transition-transform text-muted-foreground",
+                        authMenuOpen && "transform rotate-180"
+                      )}
+                    />
+                  </>
+                )}
+              </Button>
+            </CollapsibleTrigger>
+            
+            {!collapsed && (
+              <CollapsibleContent className="ml-2 pl-4 border-l border-border">
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "justify-start w-full gap-2 h-9 mt-1",
+                    window.location.pathname === "/login" && "bg-secondary font-medium"
+                  )}
+                  asChild
+                >
+                  <Link to="/login">
+                    <LogIn className={cn("h-4 w-4", window.location.pathname === "/login" ? "text-dashboard-purple" : "text-muted-foreground")} />
+                    <span className="text-sm">Login</span>
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "justify-start w-full gap-2 h-9",
+                    window.location.pathname === "/register" && "bg-secondary font-medium"
+                  )}
+                  asChild
+                >
+                  <Link to="/register">
+                    <UserPlus className={cn("h-4 w-4", window.location.pathname === "/register" ? "text-dashboard-purple" : "text-muted-foreground")} />
+                    <span className="text-sm">Register</span>
+                  </Link>
+                </Button>
+              </CollapsibleContent>
+            )}
+          </Collapsible>
           
           {/* Demo Menu with Child Menus */}
           <Collapsible 
