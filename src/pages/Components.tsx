@@ -1,5 +1,4 @@
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { 
   Card, 
@@ -31,7 +30,11 @@ import {
   Info, 
   AlertCircle,
   BellRing,
-  Check
+  Check,
+  X,
+  Menu,
+  Maximize,
+  PanelLeft
 } from 'lucide-react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -41,8 +44,42 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter,
+  SheetClose
+} from "@/components/ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const Components = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
   // Scroll to the appropriate section based on the URL hash
   useEffect(() => {
     const hash = window.location.hash;
@@ -389,6 +426,228 @@ const Components = () => {
                     </TableRow>
                   </TableBody>
                 </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Modals and Dialogs Section */}
+        <section id="modals" className="scroll-mt-16">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Modals and Dialogs</CardTitle>
+              <CardDescription>Modal dialogs, alerts, and slide-out panels</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-6">
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Dialog</h4>
+                <div className="flex flex-wrap gap-4">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="default">Open Dialog</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle>Dialog Title</DialogTitle>
+                        <DialogDescription>
+                          A dialog is a window overlaid on either the primary window or another dialog window. 
+                          Windows under a modal dialog are inert.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="py-4">
+                        <p className="text-sm text-muted-foreground">
+                          Dialogs are typically used for confirming actions, displaying important information, or requiring a decision from the user.
+                        </p>
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button type="button" variant="secondary">Cancel</Button>
+                        </DialogClose>
+                        <Button type="button">Save Changes</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline">Form Dialog</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Edit Profile</DialogTitle>
+                        <DialogDescription>
+                          Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <label htmlFor="name" className="text-right text-sm font-medium">
+                            Name
+                          </label>
+                          <Input
+                            id="name"
+                            defaultValue="John Doe"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <label htmlFor="username" className="text-right text-sm font-medium">
+                            Username
+                          </label>
+                          <Input
+                            id="username"
+                            defaultValue="@johndoe"
+                            className="col-span-3"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button type="button" variant="secondary">Cancel</Button>
+                        </DialogClose>
+                        <Button type="button">Save changes</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Alert Dialog</h4>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive">Delete Item</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your
+                        account and remove your data from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Sheet (Slide-out Panel)</h4>
+                <div className="flex flex-wrap gap-4">
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline">
+                        <PanelLeft className="mr-2 h-4 w-4" />
+                        Open Left Sheet
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left">
+                      <SheetHeader>
+                        <SheetTitle>Left Sheet</SheetTitle>
+                        <SheetDescription>
+                          A panel that slides in from the left side of the screen.
+                        </SheetDescription>
+                      </SheetHeader>
+                      <div className="grid gap-4 py-4">
+                        <p className="text-sm text-muted-foreground">
+                          Sheets are versatile components that can be used for navigation,
+                          filters, or additional information.
+                        </p>
+                        <div className="grid grid-cols-1 gap-2">
+                          <Button variant="ghost" className="justify-start">Dashboard</Button>
+                          <Button variant="ghost" className="justify-start">Settings</Button>
+                          <Button variant="ghost" className="justify-start">Messages</Button>
+                        </div>
+                      </div>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button>Close</Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button variant="outline">
+                        <Menu className="mr-2 h-4 w-4" />
+                        Open Right Sheet
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader>
+                        <SheetTitle>Right Sheet</SheetTitle>
+                        <SheetDescription>
+                          A panel that slides in from the right side of the screen.
+                        </SheetDescription>
+                      </SheetHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                          <div className="flex items-center gap-2">
+                            <Checkbox id="terms" />
+                            <label htmlFor="terms">Accept terms and conditions</label>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Checkbox id="newsletter" />
+                            <label htmlFor="newsletter">Subscribe to newsletter</label>
+                          </div>
+                        </div>
+                      </div>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button type="button" variant="secondary">Cancel</Button>
+                        </SheetClose>
+                        <Button type="button">Save</Button>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div>
+                <h4 className="text-lg font-semibold mb-4">Popover</h4>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline">Open Popover</Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <div className="grid gap-4">
+                      <div className="space-y-2">
+                        <h4 className="font-medium leading-none">Dimensions</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Set the dimensions for the layer.
+                        </p>
+                      </div>
+                      <div className="grid gap-2">
+                        <div className="grid grid-cols-3 items-center gap-4">
+                          <label htmlFor="width" className="text-sm">Width</label>
+                          <Input
+                            id="width"
+                            defaultValue="100%"
+                            className="col-span-2 h-8"
+                          />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                          <label htmlFor="height" className="text-sm">Height</label>
+                          <Input
+                            id="height"
+                            defaultValue="25px"
+                            className="col-span-2 h-8"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
             </CardContent>
           </Card>
