@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
-  Sidebar,
+  Sidebar as SidebarRoot,
   SidebarContent,
   SidebarGroup,
   SidebarGroupLabel,
@@ -160,7 +160,7 @@ const Sidebar = ({ className }: SidebarProps) => {
       <div className="flex-1 overflow-auto py-4">
         <nav className="grid gap-1 px-2">
           {/* --- Begin: App > CRM > Leads View --- */}
-          <Sidebar>
+          <SidebarRoot>
             <SidebarContent>
               <SidebarGroup>
                 <SidebarGroupLabel>App</SidebarGroupLabel>
@@ -182,7 +182,7 @@ const Sidebar = ({ className }: SidebarProps) => {
                 </SidebarGroupContent>
               </SidebarGroup>
             </SidebarContent>
-          </Sidebar>
+          </SidebarRoot>
           {/* --- End: App > CRM > Leads View --- */}
 
           {/* Original sidebar content continues below */}
