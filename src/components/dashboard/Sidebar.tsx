@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
-  Sidebar as SidebarRoot,
+  Sidebar as ShadcnSidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupLabel,
@@ -39,7 +39,7 @@ type SidebarProps = {
   className?: string;
 };
 
-const Sidebar = ({ className }: SidebarProps) => {
+const DashboardSidebar = ({ className }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const [demoMenuOpen, setDemoMenuOpen] = useState(false);
   const [childMenu1Open, setChildMenu1Open] = useState(false);
@@ -160,7 +160,7 @@ const Sidebar = ({ className }: SidebarProps) => {
       <div className="flex-1 overflow-auto py-4">
         <nav className="grid gap-1 px-2">
           {/* --- Begin: App > CRM > Leads View --- */}
-          <SidebarRoot>
+          <ShadcnSidebar>
             <SidebarContent>
               <SidebarGroup>
                 <SidebarGroupLabel>App</SidebarGroupLabel>
@@ -182,7 +182,7 @@ const Sidebar = ({ className }: SidebarProps) => {
                 </SidebarGroupContent>
               </SidebarGroup>
             </SidebarContent>
-          </SidebarRoot>
+          </ShadcnSidebar>
           {/* --- End: App > CRM > Leads View --- */}
 
           {/* Original sidebar content continues below */}
@@ -496,4 +496,4 @@ const Sidebar = ({ className }: SidebarProps) => {
   );
 };
 
-export default Sidebar;
+export default DashboardSidebar;
