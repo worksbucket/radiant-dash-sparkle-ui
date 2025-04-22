@@ -1,9 +1,10 @@
+
 import React from 'react';
+import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { cn } from '@/lib/utils';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import DashboardSidebar from './Sidebar';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden w-full">
-        <DashboardSidebar />
+        <Sidebar />
         
         <div className="flex-1 flex flex-col overflow-hidden">
           <Navbar />
