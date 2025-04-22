@@ -24,16 +24,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-} from '@/components/ui/sidebar';
 
 type SidebarProps = {
   className?: string;
@@ -135,7 +125,6 @@ const Sidebar = ({ className }: SidebarProps) => {
     { icon: HelpCircle, label: 'Help', path: '#', active: false },
   ];
 
-  // Add the App > CRM > Leads View sidebar structure at the top for better grouping
   return (
     <aside
       className={cn(
@@ -159,33 +148,6 @@ const Sidebar = ({ className }: SidebarProps) => {
 
       <div className="flex-1 overflow-auto py-4">
         <nav className="grid gap-1 px-2">
-          {/* --- Begin: App > CRM > Leads View --- */}
-          <Sidebar>
-            <SidebarContent>
-              <SidebarGroup>
-                <SidebarGroupLabel>App</SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarGroup>
-                    <SidebarGroupLabel>CRM</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                      <SidebarMenu>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton asChild isActive={window.location.pathname.startsWith('/leads')}>
-                            <Link to="/leads">
-                              <span>Leads View</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </SidebarMenu>
-                    </SidebarGroupContent>
-                  </SidebarGroup>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </SidebarContent>
-          </Sidebar>
-          {/* --- End: App > CRM > Leads View --- */}
-
-          {/* Original sidebar content continues below */}
           {navItems.map((item, i) => (
             <Button
               key={i}

@@ -1,6 +1,6 @@
 
 import React, { useRef, useState, useEffect } from "react";
-import { MessageCircle, Send, User } from "lucide-react";
+import { messageCircle, send, user } from "lucide-react";
 
 const MESSAGES_SEED = [
   { id: 1, from: "agent", text: "Hi! 👋 How can we help you today?" },
@@ -41,7 +41,7 @@ function ChatWidget() {
         className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg bg-primary text-primary-foreground hover:scale-105 transition-transform"
         onClick={() => setOpen(true)}
       >
-        <MessageCircle size={28} />
+        <messageCircle size={28} />
       </button>
     );
   }
@@ -60,7 +60,7 @@ function ChatWidget() {
       >
         {/* Header */}
         <div className="flex items-center gap-2 px-4 py-3 border-b bg-primary text-primary-foreground rounded-t-xl">
-          <User size={28} className="bg-white/20 rounded-full p-1" />
+          <user size={28} className="bg-white/20 rounded-full p-1" />
           <div className="flex-1">
             <div className="text-base font-semibold">Support Chat</div>
             <div className="text-xs opacity-80">Typically replies in a few minutes</div>
@@ -114,7 +114,7 @@ function ChatWidget() {
             aria-label="Send message"
             disabled={input.length === 0}
           >
-            <Send size={20} />
+            <send size={20} />
           </button>
         </form>
       </div>
