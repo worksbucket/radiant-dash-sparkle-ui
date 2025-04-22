@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,7 @@ import Register from "./pages/Register";
 import Leads from "./pages/Leads";
 import LeadDetail from "./pages/LeadDetail";
 import ChatWidget from "@/components/ChatWidget";
+import Kanban from "./pages/Kanban";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,6 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      {/* Add chat widget floating on top */}
       <ChatWidget />
       <BrowserRouter>
         <Routes>
@@ -32,7 +31,7 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/leads" element={<Leads />} />
           <Route path="/lead/:id" element={<LeadDetail />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/kanban" element={<Kanban />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
