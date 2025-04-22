@@ -3,7 +3,6 @@ import React from "react";
 import { Mail } from "lucide-react";
 
 const EmailsTab = () => {
-  // Sample emails data (currently empty for demonstration)
   const emails = [];
 
   return (
